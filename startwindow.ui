@@ -6,36 +6,59 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>451</width>
-    <height>186</height>
+    <width>513</width>
+    <height>313</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>StartWindow</string>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedKingdom"/>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="pushStartTest">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>80</y>
-      <width>75</width>
-      <height>23</height>
+      <x>210</x>
+      <y>182</y>
+      <width>101</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Start Quiz</string>
     </property>
    </widget>
    <widget class="QComboBox" name="comboTestSelect">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>381</width>
-      <height>31</height>
+      <x>10</x>
+      <y>70</y>
+      <width>491</width>
+      <height>41</height>
      </rect>
     </property>
+   </widget>
+   <widget class="QComboBox" name="comboLang">
+    <property name="geometry">
+     <rect>
+      <x>359</x>
+      <y>10</y>
+      <width>71</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>en_gb</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>ru_ru</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -43,17 +66,24 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>451</width>
+     <width>513</width>
      <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMain">
+    <property name="locale">
+     <locale language="English" country="UnitedKingdom"/>
+    </property>
     <property name="title">
      <string>Menu</string>
     </property>
+    <addaction name="actionReLoad_Tests"/>
     <addaction name="actionExit"/>
    </widget>
-   <widget class="QMenu" name="menuAbout">
+   <widget class="QMenu" name="menuInfo">
+    <property name="locale">
+     <locale language="English" country="UnitedKingdom"/>
+    </property>
     <property name="title">
      <string>About</string>
     </property>
@@ -61,7 +91,7 @@
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuMain"/>
-   <addaction name="menuAbout"/>
+   <addaction name="menuInfo"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -95,6 +125,11 @@
   <action name="actionHelp">
    <property name="text">
     <string>Help</string>
+   </property>
+  </action>
+  <action name="actionReLoad_Tests">
+   <property name="text">
+    <string>Reload Tests</string>
    </property>
   </action>
  </widget>

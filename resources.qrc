@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/new/en_gb" lang="en_gb">
+        <file>languages/en_gb.png</file>
+    </qresource>
+    <qresource prefix="/new/ru_ru" lang="ru_ru">
+        <file>languages/ru_ru.png</file>
+    </qresource>
+    <qresource prefix="/new/cfg">
+        <file>config.qtc</file>
+    </qresource>
+    <qresource prefix="/new/data">
+        <file>data/example_en_gb.qzt</file>
+        <file>data/example_ru_ru.qzt</file>
+    </qresource>
+</RCC>
