@@ -26,9 +26,11 @@ CONFIG += c++17
 
 SOURCES += \
         main.cpp \
+        quiztest.cpp \
         startwindow.cpp
 
 HEADERS += \
+        quiztest.h \
         startwindow.h
 
 FORMS += \

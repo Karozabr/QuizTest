@@ -6,15 +6,17 @@ StartWindow::StartWindow(QWidget *parent) :
     ui(new Ui::StartWindow)
 {
     ui->setupUi(this);
-    createLanguageCombo();
-    //loadLanguage();
+    //createLanguageCombo();
+    //loadLanguage(m_currLang);
+    connectMenu();
+    loadAllQuizes();
   }
 
 StartWindow::~StartWindow()
 {
     delete ui;
 }
-
+// --------------------- Language processing ---------------------------------- //
 void StartWindow::createLanguageCombo(void)
 {
  QActionGroup* langGroup = new QActionGroup(ui->comboLang);
@@ -116,4 +118,57 @@ void StartWindow::changeEvent(QEvent* event)
   }
  }
  QMainWindow::changeEvent(event);
+}
+// ------------------ menu ---------------------------- //
+
+void StartWindow::connectMenu(){
+
+    connect(ui->actionReLoad_Quizes, &QAction::triggered, this, &StartWindow::menuReload);
+    connect(ui->actionExit, &QAction::triggered, this, &QWidget::close);
+    connect(ui->actionAbout, &QAction::triggered, this, &StartWindow::menuAbout);
+    connect(ui->actionHelp, &QAction::triggered, this, &StartWindow::menuHelp);
+
+}
+
+void StartWindow::menuReload(){
+    QMessageBox::about(this, tr("Reloading..."),tr("..."));
+}
+
+void StartWindow::menuHelp(){
+    QMessageBox::about(this, tr("Helping..."),tr("..."));
+}
+
+void StartWindow::menuAbout(){
+QMessageBox::about(this, tr("About..."),
+           tr("<b>QuizTest</b>" "Maxim Potkalo" "2019"));
+}
+
+
+
+// --------------- main field ---------------------- //
+
+void StartWindow::buttonStart(){
+   QMessageBox::about(this, tr("START"),tr("!!!"));
+}
+void StartWindow::comboLang(){
+
+}
+void StartWindow::comboQuiz(){
+
+}
+
+
+// ---------------------------- Quiz processing ------------------------------ //
+
+void StartWindow::loadAllQuizes(){
+    m_QizPath = QApplication::applicationDirPath();
+    m_QizPath.append("/data");
+    QDir dir(m_langPath);
+    QStringList fileNames = dir.entryList(QStringList("*.qzt"));
+
+    for (int i = 0; i < fileNames.size(); ++i) {
+         // get locale extracted by filename
+         processQuiz();
+    }
+
 }
