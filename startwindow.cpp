@@ -161,14 +161,38 @@ void StartWindow::comboQuiz(){
 // ---------------------------- Quiz processing ------------------------------ //
 
 void StartWindow::loadAllQuizes(){
+    std::vector<QString> tmpQuiz = {"Example Quiz EN GB", "One_~_Ans1_C;_;_Ans2_;_Ans3______;_Ans4*_*_01","QuestionTwoTextHere_~_QuestionTwoAnswerOne_;_QuestionTwoAnswerTwo_C_;_QuestionTwoAnswerThree_;_QuestionTwoAnswerFour_C_*_02,04"};
     m_QizPath = QApplication::applicationDirPath();
     m_QizPath.append("/data");
-    QDir dir(m_langPath);
-    QStringList fileNames = dir.entryList(QStringList("*.qzt"));
+    QDir dir(m_QizPath);
+    QStringList QuizfileTextNames = dir.entryList(QStringList("*.txt"));
+    QStringList QuizfileImgNames = dir.entryList(QStringList("*.jpg"));
+    std::vector<QuizTest> AllQuizes;
+    QDir::setCurrent("/data");
+    //int END = QuizfileTextNames.size();
+    size_t END = 1;
+    for (size_t i = 0; i < END; ++i) {
+         //open each Quiz file
+        QuizTest newQuiz;
+         QFile quiz(QuizfileTextNames[i]);
 
-    for (int i = 0; i < fileNames.size(); ++i) {
-         // get locale extracted by filename
-         processQuiz();
+         if (!quiz.open(QIODevice::ReadWrite | QIODevice::Text))
+                 return;
+
+         bool quizname = true;
+         auto it = tmpQuiz.begin();
+         while (it != tmpQuiz.end()) {
+
+            //QByteArray line = quiz.readLine();
+             QString line = *it++;
+            if (quizname){
+                quizname = false;
+                newQuiz.SetName(line);
+                continue;
+            }
+            newQuiz.loadQuestion(line);
+
+            }
     }
-
+int a = 0;
 }

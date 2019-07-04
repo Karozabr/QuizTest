@@ -2,11 +2,14 @@
 #define STARTWINDOW_H
 
 #include <QMainWindow>
-#include <QTranslator>
+#include <QException>
 #include <QDir>
 
-#include <QAction>
+#include <QTranslator>
+
 #include <QMessageBox>
+
+#include "quiztest.h"
 
 namespace Ui {
 class StartWindow;
