@@ -15,12 +15,15 @@ class QuizTest
 public:
     QuizTest();
 
-    void loadQuestion(const QString& QuestionString, const QString ImagesInfo = nullptr);
-    inline std::pair<const QString&, const std::map<QPixmap*, QString*>&> showQuestion(const size_t QuestionNumber)  const;
-    inline std::pair<const QString&, const std::map<QPixmap*, QString*>&> showAnswer(const size_t QuestionNumber, const size_t AnswerNumber)  const;
-    inline bool checkAnswer(const size_t QuestionNumber, const size_t AnswerNumber) const;
-    void getImagesForQuiz(std::map<QPixmap, QString>& LnkToMapImgs);
-    void SetName(const QString Name);
+    std::pair<const QString&, const std::map<QPixmap*, QString*>&>  GetQuestion(const size_t QuestionNumber)  const;
+    void                                                            loadQuestionText(const QString& QuestionString, const QString ImagesInfo = nullptr);
+    std::pair<const QString&, const std::map<QPixmap*, QString*>&>  GetSingleAnswer(const size_t QuestionVectorItem, const size_t AnswerVectorItem)  const;
+    const std::vector<QString>                                      GetAnswersText(const size_t QuestionVectorItem)  const;
+    bool                                                            checkAnswer(const size_t QuestionVectorItem, const size_t AnswerVectorItem) const;
+    void                                                            getImagesForQuiz(std::map<QPixmap, QString>& LnkToMapImgs);
+    void                                                            SetNameAndParams(const QString& First_String);
+    QString                                                         GetName() const;
+    unsigned int                                                    GetQuizSize() const;
 
 private:
     void processImageInfo(const QString& ImagesInfo);
@@ -40,6 +43,7 @@ private:
     std::map<QPixmap, QString> AllImages;
     std::vector<Question> Questions;
     QString QuizName;
+    QString QuizParams;
 };
 
 #endif // QUIZTEST_H

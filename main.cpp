@@ -4,8 +4,8 @@
 int main(int argc, char *argv[])
 {
     QApplication Quiz(argc, argv);
-    StartWindow MainW;
-     MainW.show();
+    StartWindow StartW;
+     StartW.show();
 
     return Quiz.exec();
 }

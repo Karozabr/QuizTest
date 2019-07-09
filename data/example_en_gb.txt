@@ -1,4 +1,3 @@
-﻿Example Quiz EN GB
-One_~_Ans1C_;_Ans2_;_Ans3_;_Ans4_*_01
-QuestionTwoTextHere_~_QuestionTwoAnswerOne_;_QuestionTwoAnswerTwo_C_;_QuestionTwoAnswerThree_;_QuestionTwoAnswerFour_C_*_02,04
-One_~_Ans1_C;_;_Ans2_;_Ans3_;_Ans4*_*_01
+﻿Example Quiz EN GB@THISISPARAMETRS
+One_~_Ans1_C;_;_Ans2_;_Ans3______;_Ans4*_*_1
+QuestionTwoTextHere_~_QuestionTwoAnswerOne_;_QuestionTwoAnswerTwo__;_QuestionTwoAnswerThree_;_QuestionTwoAnswerFour_C_*_4

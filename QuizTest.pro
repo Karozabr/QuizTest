@@ -27,13 +27,19 @@ CONFIG += c++17
 SOURCES += \
         main.cpp \
         quiztest.cpp \
+        quizwindow.cpp \
+        resultdialog.cpp \
         startwindow.cpp
 
 HEADERS += \
         quiztest.h \
+        quizwindow.h \
+        resultdialog.h \
         startwindow.h
 
 FORMS += \
+        quizwindow.ui \
+        resultdialog.ui \
         startwindow.ui
 
 TRANSLATIONS = languages/en_gb.ts
@@ -43,5 +49,4 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RESOURCES += \
-    resources.qrc
+RESOURCES +=

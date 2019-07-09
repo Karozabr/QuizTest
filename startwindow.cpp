@@ -6,10 +6,13 @@ StartWindow::StartWindow(QWidget *parent) :
     ui(new Ui::StartWindow)
 {
     ui->setupUi(this);
+    pQuizWindow =  new QuizWindow();
+    connect(pQuizWindow, &QMainWindow::windowTitleChanged, this, &StartWindow::show);
     //createLanguageCombo();
     //loadLanguage(m_currLang);
     connectMenu();
     loadAllQuizes();
+    MakeComboQuiz();
   }
 
 StartWindow::~StartWindow()
@@ -29,7 +32,7 @@ void StartWindow::createLanguageCombo(void)
  defaultLocale = defaultLocale.toLower(); // ru_RU => ru_ru
  //defaultLocale.truncate(defaultLocale.lastIndexOf('_')); // e.g. "ru"
 
- m_langPath = QApplication::applicationDirPath();
+ QString m_langPath = QApplication::applicationDirPath();
  m_langPath.append("/languages");
  QDir dir(m_langPath);
  QStringList fileNames = dir.entryList(QStringList("*.qm"));
@@ -92,7 +95,6 @@ void StartWindow::loadLanguage(const QString& rLanguage)
   QString languageName = QLocale::languageToString(locale.language());
   switchTranslator(m_translator, QString("TranslationExample_%1.qm").arg(rLanguage));
   switchTranslator(m_translatorQt, QString("qt_%1.qm").arg(rLanguage));
-  //ui.statusBar->showMessage(tr("Current Language changed to %1").arg(languageName));
  }
 }
 
@@ -127,15 +129,18 @@ void StartWindow::connectMenu(){
     connect(ui->actionExit, &QAction::triggered, this, &QWidget::close);
     connect(ui->actionAbout, &QAction::triggered, this, &StartWindow::menuAbout);
     connect(ui->actionHelp, &QAction::triggered, this, &StartWindow::menuHelp);
-
+    connect(ui->pushStartTest, &QPushButton::clicked, this, &StartWindow::buttonStart);
+    connect(ui->comboTestSelect, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &StartWindow::SelectQuizComboBox);
 }
 
 void StartWindow::menuReload(){
-    QMessageBox::about(this, tr("Reloading..."),tr("..."));
+    //add progress bar here?
+    loadAllQuizes();
 }
 
 void StartWindow::menuHelp(){
-    QMessageBox::about(this, tr("Helping..."),tr("..."));
+    QDialog Help;
+    Help.exec();
 }
 
 void StartWindow::menuAbout(){
@@ -148,51 +153,78 @@ QMessageBox::about(this, tr("About..."),
 // --------------- main field ---------------------- //
 
 void StartWindow::buttonStart(){
-   QMessageBox::about(this, tr("START"),tr("!!!"));
-}
-void StartWindow::comboLang(){
-
-}
-void StartWindow::comboQuiz(){
-
-}
-
+    if(pSelectedQuiz == nullptr) {QMessageBox::about(this, "ERROR!", "No Quiz to start!");return;}
+    pQuizWindow->SetQuiz(pSelectedQuiz);
+    pQuizWindow->show();
+    this->hide();
+ }
 
 // ---------------------------- Quiz processing ------------------------------ //
 
 void StartWindow::loadAllQuizes(){
-    std::vector<QString> tmpQuiz = {"Example Quiz EN GB", "One_~_Ans1_C;_;_Ans2_;_Ans3______;_Ans4*_*_01","QuestionTwoTextHere_~_QuestionTwoAnswerOne_;_QuestionTwoAnswerTwo_C_;_QuestionTwoAnswerThree_;_QuestionTwoAnswerFour_C_*_02,04"};
-    m_QizPath = QApplication::applicationDirPath();
-    m_QizPath.append("/data");
-    QDir dir(m_QizPath);
+
+    std::vector<std::vector<QString>> DataReadFromFile;
+
+    QString fQizPath = QApplication::applicationDirPath();
+    fQizPath.append("/data");
+    QDir dir(fQizPath);
     QStringList QuizfileTextNames = dir.entryList(QStringList("*.txt"));
     QStringList QuizfileImgNames = dir.entryList(QStringList("*.jpg"));
-    std::vector<QuizTest> AllQuizes;
-    QDir::setCurrent("/data");
-    //int END = QuizfileTextNames.size();
-    size_t END = 1;
-    for (size_t i = 0; i < END; ++i) {
-         //open each Quiz file
-        QuizTest newQuiz;
-         QFile quiz(QuizfileTextNames[i]);
-
-         if (!quiz.open(QIODevice::ReadWrite | QIODevice::Text))
-                 return;
-
+    fQizPath.append("/"); //addig "/" for correct full file name
+    for (int f = 0; f < QuizfileTextNames.size(); f++) {
+    //open each Quiz file
+        QString file_path = fQizPath + QuizfileTextNames[f];
+        QFile quiz(file_path);
+        std::vector<QString> newQuiz;
+        if (!quiz.open(QIODevice::ReadOnly | QIODevice::Text))
+                return;
+        while (!quiz.atEnd()){
+            QString tmp = quiz.readLine();
+            tmp.chop(1); //droping endLine simbol
+            newQuiz.push_back(tmp);
+        }
+        DataReadFromFile.push_back(newQuiz);
+    }
+   //----For Test Area ---//
+   // std::vector<QString> tmpQuizEn = {"Example Quiz EN GB@THISISPARAMETRS", "One_~_Ans1_C;_;_Ans2_;_Ans3______;_Ans4*_*_1","QuestionTwoTextHere_~_QuestionTwoAnswerOne_;_QuestionTwoAnswerTwo__;_QuestionTwoAnswerThree_;_QuestionTwoAnswerFour_C_*_4"};
+   // std::vector<QString> tmpQuizRu = {"Образец вопросника Рус Рус@ЭТОПАРАМЕТРЫ", "ПЕрвый_~_Отв1!!_;_Отв2._;_Отв3__Пр____;_;_Отв44*_*_3","ВопросВторойТут_~_ОТветНаВтойРаз_;_ОтветНаВторойДва_Пр_;_ОТветНаВторойТри_;_ОТветНаВторойЧетыре_*_2"};
+   // DataReadFromFile.push_back(tmpQuizEn);
+   // DataReadFromFile.push_back(tmpQuizRu);
+    //----For Test Area ENDS---//
+    for (size_t i = 0; i < DataReadFromFile.size(); ++i) {
+         QuizTest newQuiz;
          bool quizname = true;
-         auto it = tmpQuiz.begin();
-         while (it != tmpQuiz.end()) {
-
-            //QByteArray line = quiz.readLine();
+         auto it = DataReadFromFile.at(i).begin();
+         while (it != DataReadFromFile.at(i).end()) {
              QString line = *it++;
             if (quizname){
                 quizname = false;
-                newQuiz.SetName(line);
+                newQuiz.SetNameAndParams(line);
                 continue;
             }
-            newQuiz.loadQuestion(line);
-
-            }
+            newQuiz.loadQuestionText(line);
     }
-int a = 0;
+
+    AllQuizMap[newQuiz.GetName()] = newQuiz;
+    }
+
+//    int FOrBreakPOintOnly = 0;
+}
+
+void StartWindow::MakeComboQuiz(){
+
+    for (auto it : AllQuizMap) {
+        ui->comboTestSelect->addItem(it.first);
+      }
+}
+
+void StartWindow::SelectQuizComboBox() {
+    auto param = ui->comboTestSelect->currentText();
+    if(param != nullptr)
+    pSelectedQuiz = &AllQuizMap.at(param);
+    else return;
+}
+// ---------------------------------------------------------------------------- //
+void StartWindow::testFunc(){
+    QMessageBox::about(this,"TESTFUNC","              ");
 }
