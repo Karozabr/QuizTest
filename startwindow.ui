@@ -26,39 +26,107 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>Start Quiz</string>
+     <string>Start Quiz!</string>
     </property>
    </widget>
    <widget class="QComboBox" name="comboTestSelect">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>70</y>
+      <y>90</y>
       <width>491</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::NoContextMenu</enum>
+    </property>
+    <property name="currentText">
+     <string notr="true"/>
     </property>
    </widget>
    <widget class="QComboBox" name="comboLang">
     <property name="geometry">
      <rect>
-      <x>359</x>
-      <y>10</y>
-      <width>71</width>
+      <x>430</x>
+      <y>30</y>
+      <width>51</width>
       <height>35</height>
      </rect>
     </property>
+    <property name="currentText">
+     <string notr="true"/>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
+    </property>
     <item>
      <property name="text">
-      <string>en_gb</string>
+      <string notr="true"/>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/icons/languages/en_gb.png</normaloff>:/icons/languages/en_gb.png</iconset>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>ru_ru</string>
+      <string notr="true"/>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/icons/languages/ru_ru.png</normaloff>:/icons/languages/ru_ru.png</iconset>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string notr="true"/>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/icons/languages/zh_cn.png</normaloff>:/icons/languages/zh_cn.png</iconset>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="labelInterface">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>10</y>
+      <width>51</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Interface</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelComboQuiz">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>261</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Choose Quiz to start</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -77,7 +145,6 @@
     <property name="title">
      <string>Menu</string>
     </property>
-    <addaction name="actionReLoad_Quizes"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuInfo">
@@ -155,6 +222,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

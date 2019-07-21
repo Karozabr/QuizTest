@@ -27,16 +27,24 @@ CONFIG += c++17
 SOURCES += \
         main.cpp \
         quiztest.cpp \
+        quizwindow.cpp \
+        resultdialog.cpp \
         startwindow.cpp
 
 HEADERS += \
         quiztest.h \
+        quizwindow.h \
+        resultdialog.h \
         startwindow.h
 
 FORMS += \
+        quizwindow.ui \
+        resultdialog.ui \
         startwindow.ui
 
-TRANSLATIONS = languages/en_gb.ts
+TRANSLATIONS = languages/en_gb.ts \
+               languages/ru_ru.ts \
+               languages/zh_cn.ts
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
