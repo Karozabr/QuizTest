@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>languages/en_gb.png</file>
-        <file>languages/ru_ru.png</file>
-        <file>languages/zh_cn.png</file>
+        <file>translations/en_gb.png</file>
+        <file>translations/ru_ru.png</file>
+        <file>translations/zh_cn.png</file>
     </qresource>
 </RCC>

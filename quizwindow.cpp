@@ -2,9 +2,11 @@
 #include "ui_quizwindow.h"
 
 
-QuizWindow::QuizWindow(QWidget *parent) :
+QuizWindow::QuizWindow(QWidget *parent, std::map<QString, std::vector<std::vector<int>>>* UserAnswersHistoryForQuizes) :
     QMainWindow(parent), ui(new Ui::QuizWindow)
 {
+    if(UserAnswersHistoryForQuizes == nullptr) throw std::runtime_error("ERROR! UserAnswersHistoryForQuizes in quizwindow must not be nullptr!");
+    pUserAnswersHistory = UserAnswersHistoryForQuizes;
     ui->setupUi(this);
     setWindowFlags(Qt::Window
         | Qt::WindowMinimizeButtonHint
@@ -14,13 +16,13 @@ QuizWindow::QuizWindow(QWidget *parent) :
 QuizWindow::~QuizWindow()
 {
     delete ui;
-    //QMessageBox::about(this,"DESTROING ME","");
 }
 
 
 void QuizWindow::SetQuiz(const QuizTest* ActiveQuiz){
     currentQuiz = ActiveQuiz;
-    UserAnswersList.resize(currentQuiz->GetQuizSize());
+    CurrentQuizUserAnswersList.erase(CurrentQuizUserAnswersList.begin(),CurrentQuizUserAnswersList.end());
+    CurrentQuizUserAnswersList.resize(currentQuiz->GetQuizSize());
     this->setWindowTitle(currentQuiz->GetName());
     ShowQuestion();
 }
@@ -37,11 +39,10 @@ void QuizWindow::ShowQuestion() const{
 void QuizWindow::ProcessButtonClick(unsigned int btn_number){
     bool result = currentQuiz->checkAnswer(CurrentQuestionNumber, btn_number - 1);
     if(result){
-        //проверить что тут всё правильно втыкается
-        UserAnswersList.at(CurrentQuestionNumber).push_back(btn_number);
+        CurrentQuizUserAnswersList.at(CurrentQuestionNumber).push_back(static_cast<int>(btn_number));
 
     }else {
-        UserAnswersList.at(CurrentQuestionNumber).push_back(0);
+        CurrentQuizUserAnswersList.at(CurrentQuestionNumber).push_back(0);
 
     }
     ShowAnswerResult(result);
@@ -72,7 +73,8 @@ void QuizWindow::ShowAnswerResult(const bool param) const{
 
 void QuizWindow::ShowTotalResult() const{
 
-    ResultDialog Result(nullptr, &UserAnswersList);
+    pUserAnswersHistory->operator[](currentQuiz->GetName()) = CurrentQuizUserAnswersList;
+    ResultDialog Result(nullptr, &CurrentQuizUserAnswersList);
     Result.exec();
 }
 

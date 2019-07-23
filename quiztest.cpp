@@ -88,7 +88,7 @@ void QuizTest::loadQuestionText(const QString& QuestionString){
                                            }
         }
         if(!QuestionIsFinished) newQ.QuestionText.push_back(posChar);
-        if(!AnswersAreFinished) {
+        if(!AnswersAreFinished && QuestionIsFinished) {
             QAnswer_tmp.AnswerText.push_back(posChar);
         }
         it++;

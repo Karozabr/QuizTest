@@ -53,3 +53,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resources.qrc
+
+DISTFILES += \
+    config.qtc \
+    data/example_en_gb.txt \
+    data/example_ru_ru.txt

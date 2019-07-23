@@ -20,9 +20,9 @@
    <widget class="QPushButton" name="pushStartTest">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>190</x>
       <y>182</y>
-      <width>101</width>
+      <width>161</width>
       <height>41</height>
      </rect>
     </property>
@@ -32,14 +32,14 @@
      </font>
     </property>
     <property name="text">
-     <string>Start Quiz!</string>
+     <string extracomment="Start button in start window">Start Quiz!</string>
     </property>
    </widget>
    <widget class="QComboBox" name="comboTestSelect">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>90</y>
+      <y>100</y>
       <width>491</width>
       <height>41</height>
      </rect>
@@ -54,14 +54,32 @@
    <widget class="QComboBox" name="comboLang">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>30</y>
+      <x>460</x>
+      <y>0</y>
       <width>51</width>
       <height>35</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string notr="true"/>
+    </property>
+    <property name="statusTip">
+     <string notr="true"/>
+    </property>
+    <property name="whatsThis">
+     <string notr="true"/>
+    </property>
+    <property name="accessibleName">
+     <string notr="true"/>
+    </property>
+    <property name="accessibleDescription">
+     <string notr="true"/>
+    </property>
     <property name="currentText">
      <string notr="true"/>
+    </property>
+    <property name="maxVisibleItems">
+     <number>50</number>
     </property>
     <property name="iconSize">
      <size>
@@ -75,7 +93,7 @@
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/icons/languages/en_gb.png</normaloff>:/icons/languages/en_gb.png</iconset>
+       <normaloff>:/icons/translations/en_gb.png</normaloff>:/icons/translations/en_gb.png</iconset>
      </property>
     </item>
     <item>
@@ -84,7 +102,7 @@
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/icons/languages/ru_ru.png</normaloff>:/icons/languages/ru_ru.png</iconset>
+       <normaloff>:/icons/translations/ru_ru.png</normaloff>:/icons/translations/ru_ru.png</iconset>
      </property>
     </item>
     <item>
@@ -93,29 +111,16 @@
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/icons/languages/zh_cn.png</normaloff>:/icons/languages/zh_cn.png</iconset>
+       <normaloff>:/icons/translations/zh_cn.png</normaloff>:/icons/translations/zh_cn.png</iconset>
      </property>
     </item>
-   </widget>
-   <widget class="QLabel" name="labelInterface">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>10</y>
-      <width>51</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Interface</string>
-    </property>
    </widget>
    <widget class="QLabel" name="labelComboQuiz">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>80</x>
       <y>50</y>
-      <width>261</width>
+      <width>381</width>
       <height>31</height>
      </rect>
     </property>
@@ -125,7 +130,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Choose Quiz to start</string>
+     <string extracomment="Label for quiz combo box selection in start window">Choose Quiz to start</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
@@ -176,7 +184,7 @@
   </action>
   <action name="actionExit">
    <property name="text">
-    <string>Exit</string>
+    <string extracomment="Exit option in menu">Exit</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
@@ -189,7 +197,7 @@
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>About ...</string>
+    <string extracomment="About ... option in menu">About ...</string>
    </property>
    <property name="toolTip">
     <string>About this program</string>
@@ -200,7 +208,7 @@
   </action>
   <action name="actionHelp">
    <property name="text">
-    <string>Help</string>
+    <string extracomment="Help option in menu">Help</string>
    </property>
    <property name="toolTip">
     <string>Show help</string>

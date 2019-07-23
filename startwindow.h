@@ -17,40 +17,32 @@ class StartWindow;
 class StartWindow : public QMainWindow
 {
     Q_OBJECT
-  public:
+public:
     explicit StartWindow(QWidget *parent = nullptr);
     ~StartWindow();
 
-protected slots:
- // this slot is called by the language menu actions
- void slotLanguageChanged(QAction* action);
-
- void connectMenu();
- void menuHelp();
- void menuAbout();
- void buttonStart();
-
 protected:
-  // this event is called, when a new translator is loaded or the system language is changed
-  void changeEvent(QEvent*);
+ void changeEvent(QEvent* event);
 
-
-
+protected slots:
+ void connectMenu(); // this slot is called connect all the main menu actions
+ void menuHelp();  // this slot is called by the Help menu
+ void menuAbout();  // this slot is called by the About menu
+ void buttonStart();   // this slot is called by the Strat button action
 
 private:
   Ui::StartWindow *ui;
   QString cfg_PATH;
   QString cfg_DefaultLang;
-  void processCFGfile();
-
-  // loads a language by the given language shortcur (e.g. de, en)
-  void loadLanguage(const QString& rLanguage);
-  // creates the language menu dynamically from the content of m_langPath
-  void createLanguageCombo(void);
-  QTranslator AllTranslatinos; // contains the translations for this application
-  QTranslator TranslatorQt; // contains the translations for qt
-  QString CurrentLang; // contains the currently loaded language
-  //QString m_langPath; // Path of language files. This is always fixed to /languages.
+  std::vector<QString> SupportedLanguages;
+  void SetSupportedLanguages();
+  int checkLocale ();
+  void processCFGfile(); //getting and processing data from config.qtc
+  void switchTranslator(QTranslator& translator, const QString& NewLanguageName);
+  void loadLanguage(const int LanguageIndex); // loads a language by the given language index
+  void GetDefaultLanguage(); // gets language form en_gb.qm files
+  int CurrentLang; // contains the currently loaded language index
+  QTranslator translator;
 
   void loadAllQuizes(); //loading all Quizes from files into memory
   void MakeComboQuiz(); //making comboBOX from memory data
@@ -60,7 +52,7 @@ private:
   QuizTest* pSelectedQuiz = nullptr; //pointer to selected Quiz in comboBOX
   std::map<QString, QuizTest> AllQuizMap; //map <name,content>
 
-  void testFunc(); //for test purpuses
+  std::map<QString, std::vector<std::vector<int>>> UserAnswersHistoryForQuizes;
 };
 
 #endif // STARTWINDOW_H

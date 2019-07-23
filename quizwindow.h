@@ -17,7 +17,7 @@ class QuizWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit QuizWindow(QWidget *parent = nullptr);
+    explicit QuizWindow(QWidget *parent = nullptr, std::map<QString, std::vector<std::vector<int>>>* UserAnswersHistoryForQuizes = nullptr);
     ~QuizWindow();
     void SetQuiz(const QuizTest* ActiveQuiz);
 
@@ -40,8 +40,9 @@ private:
     void ShowTotalResult()  const;
     const QuizTest* currentQuiz;
     unsigned int CurrentQuestionNumber = 0;
+    std::map<QString, std::vector<std::vector<int>>>* pUserAnswersHistory;
     //outer vector = question number; inner vector = answers in that question (zero = wrong answer, 1-9 correct answer number)
-    std::vector<std::vector<unsigned int>> UserAnswersList; //works well for both single-answer and multy-answer questions
+    std::vector<std::vector<int>> CurrentQuizUserAnswersList; //works well for both single-answer and multy-answer questions
 };
 
 #endif // QUIZWINDOW_H

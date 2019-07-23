@@ -1,3 +1,6 @@
 ﻿Example Quiz EN GB@THISISPARAMETRS
 One_~_Ans1_C;_;_Ans2_;_Ans3______;_Ans4*_*_1
-QuestionTwoTextHere_~_QuestionTwoAnswerOne_;_QuestionTwoAnswerTwo__;_QuestionTwoAnswerThree_;_QuestionTwoAnswerFour_C_*_4
+QuestionTwoTextHere_~_QuestionTwoAnswerOne_;_QuestionTwoAnswerTwo_;_QuestionTwoAnswerThree_;_QuestionTwoAnswerFour-C_*_4
+Third question is here. Isn't it?_~_Wrong one_;_corret this!_;_Tree three_;_Four_No *-*! _*_2
+Fourth fourth_~_AnswerOne to 4_;_Answer second!_;_Answer Three is here._;_Four is Correce one***!!1_*_4
+ENDFILE

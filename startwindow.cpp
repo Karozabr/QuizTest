@@ -6,13 +6,13 @@ StartWindow::StartWindow(QWidget *parent) :
     ui(new Ui::StartWindow)
 {
     ui->setupUi(this);
-    pQuizWindow =  new QuizWindow();
+    pQuizWindow =  new QuizWindow(nullptr, &UserAnswersHistoryForQuizes);
     connect(pQuizWindow, &QMainWindow::windowTitleChanged, this, &StartWindow::show);
-    connect(pQuizWindow, &QMainWindow::destroyed, this, &StartWindow::show);
-    //добавить обработку события закрытия окна вопросов (или вообще отключить такую возможность)
+    connect(ui->comboLang, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &StartWindow::loadLanguage);
+
+    SetSupportedLanguages();
     processCFGfile();
-    //createLanguageCombo();
-    //loadLanguage(m_currLang);
+    GetDefaultLanguage();
     connectMenu();
     loadAllQuizes();
     MakeComboQuiz();
@@ -21,6 +21,14 @@ StartWindow::StartWindow(QWidget *parent) :
 StartWindow::~StartWindow()
 {
     delete ui;
+}
+
+// ------------------------ Configurating program ----------------------------- //
+void StartWindow::SetSupportedLanguages(){
+    //pushback order must be the same as Language combo box items order
+    SupportedLanguages.push_back("en_gb");
+    SupportedLanguages.push_back("ru_ru");
+    SupportedLanguages.push_back("zh_cn");
 }
 
 void StartWindow::processCFGfile(){
@@ -63,81 +71,52 @@ void StartWindow::processCFGfile(){
 }
 
 // --------------------- Language processing ---------------------------------- //
-void StartWindow::createLanguageCombo(void)
-{
- QActionGroup* langGroup = new QActionGroup(ui->comboLang);
- langGroup->setExclusive(true);
 
- connect(langGroup, SIGNAL (triggered(QAction *)), this, SLOT (slotLanguageChanged(QAction *)));
-
- // format systems language
- QString defaultLocale = QLocale::system().name(); // e.g. "ru_RU"
- defaultLocale = defaultLocale.toLower(); // ru_RU => ru_ru
- //defaultLocale.truncate(defaultLocale.lastIndexOf('_')); // e.g. "ru"
-
- QString m_langPath = QApplication::applicationDirPath();
- m_langPath.append("/languages");
- QDir dir(m_langPath);
- QStringList fileNames = dir.entryList(QStringList("*.qm"));
-
- for (int i = 0; i < fileNames.size(); ++i) {
-      // get locale extracted by filename
-      QString locale;
-      locale = fileNames[i]; // ru_ru.qm
-      locale.truncate(locale.lastIndexOf('.')); // "ru_ru"
-      //locale.remove(0, locale.indexOf('_') + 1); // ....
-
-     QString lang = QLocale::languageToString(QLocale(locale).language());
-     QIcon ico(QString("%1/%2.png").arg(m_langPath).arg(locale));
-
-     QAction *action = new QAction(ico, lang, this);
-     action->setCheckable(true);
-     action->setData(locale);
-
-     ui->comboLang->insertItem(i,ico,lang);
-     //ui->comboLang->addAction(action)
-
-     langGroup->addAction(action);
-
-     // set default translators and language checked
-     if (defaultLocale == locale)
-     {
-     action->setChecked(true);
-     }
- }
+int StartWindow::checkLocale (){
+    // check if systems language is suported by program
+    QString systemLocale = QLocale::system().name(); // e.g. "ru_RU"
+    systemLocale = systemLocale.toLower(); // ru_RU => ru_ru
+    for (size_t i = 0; i < SupportedLanguages.size(); i++) {
+        if(systemLocale == SupportedLanguages.at(i)){
+            cfg_DefaultLang = SupportedLanguages.at(i);
+            return static_cast<int>(i);
+        }
+    }
+    return 0;
 }
 
-// Called every time, when a menu entry of the language menu is called
-void StartWindow::slotLanguageChanged(QAction* action)
+void StartWindow::GetDefaultLanguage()
 {
- if(nullptr != action) {
-  // load the language dependant on the action content
-  loadLanguage(action->data().toString());
-  setWindowIcon(action->icon());
- }
+
+ int InitialLangIndex = checkLocale(); //==0 if locale lang is not supported, else == supported lang index
+ if(cfg_DefaultLang.isEmpty() && InitialLangIndex == 0) cfg_DefaultLang = "en_gb";
+ QString filename = cfg_DefaultLang + ".qm";
+ ui->comboLang->setCurrentIndex(InitialLangIndex);
+ switchTranslator(translator, filename);
 }
 
-void switchTranslator(QTranslator& translator, const QString& filename)
+void StartWindow::switchTranslator(QTranslator& translator, const QString& NewLanguageFileName)
 {
  // remove the old translator
  qApp->removeTranslator(&translator);
 
  // load the new translator
-QString path = QApplication::applicationDirPath();
-    path.append("/languages/");
- if(translator.load(path + filename)) //Here Path and Filename has to be entered because the system didn't find the QM Files else
-  qApp->installTranslator(&translator);
+ QString path = QApplication::applicationDirPath();
+     path.append("/translations/");
+  if(translator.load(path + NewLanguageFileName)) //Here Path and Filename has to be entered because the system didn't find the QM Files else
+   qApp->installTranslator(&translator);
+
 }
 
-void StartWindow::loadLanguage(const QString& rLanguage)
+void StartWindow::loadLanguage(const int LanguageIndex)
 {
- if(CurrentLang != rLanguage) {
-  CurrentLang = rLanguage;
-  QLocale locale = QLocale(CurrentLang);
-  QLocale::setDefault(locale);
-  QString languageName = QLocale::languageToString(locale.language());
-  switchTranslator(AllTranslatinos, QString("TranslationExample_%1.qm").arg(rLanguage));
-  switchTranslator(TranslatorQt, QString("qt_%1.qm").arg(rLanguage));
+ if(CurrentLang != LanguageIndex) {
+     QString lang = SupportedLanguages.at(static_cast<size_t>(LanguageIndex));
+     QLocale locale = QLocale(lang);
+     QLocale::setDefault(locale);
+     lang.append(".qm");
+     switchTranslator(translator, lang);
+     CurrentLang = LanguageIndex;
  }
 }
 
@@ -146,25 +125,23 @@ void StartWindow::changeEvent(QEvent* event)
  if(nullptr != event) {
    switch(event->type()) {
    // this event is send if a translator is loaded
-   case QEvent::LanguageChange:
-    //ui.retranslateUi(this);
-    break;
-
+       case QEvent::LanguageChange: {
+       ui->retranslateUi(this);
+       break;
+       }
    // this event is send, if the system, language changes
-   case QEvent::LocaleChange:
-   {
-    QString locale = QLocale::system().name();
-    locale.truncate(locale.lastIndexOf('_'));
-    loadLanguage(locale);
-   }
-   break;
-     default:
-         break;
+   case QEvent::LocaleChange: {
+       loadLanguage(checkLocale());
+       }
+       break;
+   default:
+       break;
   }
  }
  QMainWindow::changeEvent(event);
 }
-// ------------------ menu ---------------------------- //
+
+// ------------------ Main Window actions ---------------------------- //
 
 void StartWindow::connectMenu(){
 
@@ -182,14 +159,22 @@ void StartWindow::menuHelp(){
 }
 
 void StartWindow::menuAbout(){
-QMessageBox::about(this, tr("About..."),
-           tr("<b>QuizTest</b>" "Maxim Potkalo" "2019"));
+    //: This is About window tilte
+    QString Title = tr("About...");
+    //: This is program name inside About window
+    QString ProgramName = tr("QuizTest");
+    //: This is author name inside About window
+    QString Author = tr("Maxim Potkalo");
+    //: This is Date inside About window
+    QString Date = tr("2019");
+    //: This is program additional info inside About window
+    QString Info = tr("ver. 1.0");
+    QString FullAboutText = ProgramName + ("\n ") + Author + ("\n ") + Date + ("\n ") + Info;
+    QMessageBox::about(this, Title, FullAboutText);
 }
 
-
-// --------------- main field ---------------------- //
-
 void StartWindow::buttonStart(){
+    //: This is Error message on Buttont start in start window
     if(pSelectedQuiz == nullptr) {QMessageBox::about(this, tr("ERROR!"), tr("No Quiz to start!"));return;}
     pQuizWindow->SetQuiz(pSelectedQuiz);
     pQuizWindow->show();
@@ -222,17 +207,12 @@ void StartWindow::loadAllQuizes(){
                 return;
         while (!quiz.atEnd()){
             QString tmp = quiz.readLine();
+            if(tmp == "ENDFILE") continue;
             tmp.chop(1); //droping endLine simbol
             newQuiz.push_back(tmp);
         }
         DataReadFromFile.push_back(newQuiz);
     }
-   //----For Test Area ---//
-   // std::vector<QString> tmpQuizEn = {"Example Quiz EN GB@THISISPARAMETRS", "One_~_Ans1_C;_;_Ans2_;_Ans3______;_Ans4*_*_1","QuestionTwoTextHere_~_QuestionTwoAnswerOne_;_QuestionTwoAnswerTwo__;_QuestionTwoAnswerThree_;_QuestionTwoAnswerFour_C_*_4"};
-   // std::vector<QString> tmpQuizRu = {"Образец вопросника Рус Рус@ЭТОПАРАМЕТРЫ", "ПЕрвый_~_Отв1!!_;_Отв2._;_Отв3__Пр____;_;_Отв44*_*_3","ВопросВторойТут_~_ОТветНаВтойРаз_;_ОтветНаВторойДва_Пр_;_ОТветНаВторойТри_;_ОТветНаВторойЧетыре_*_2"};
-   // DataReadFromFile.push_back(tmpQuizEn);
-   // DataReadFromFile.push_back(tmpQuizRu);
-    //----For Test Area ENDS---//
     for (size_t i = 0; i < DataReadFromFile.size(); ++i) {
          QuizTest newQuiz;
          bool quizname = true;
@@ -249,8 +229,6 @@ void StartWindow::loadAllQuizes(){
 
     AllQuizMap[newQuiz.GetName()] = newQuiz;
     }
-
-//    int FOrBreakPOintOnly = 0;
 }
 
 void StartWindow::MakeComboQuiz(){
@@ -265,8 +243,4 @@ void StartWindow::SelectQuizComboBox() {
     if(param != nullptr)
     pSelectedQuiz = &AllQuizMap.at(param);
     else return;
-}
-// -------------------DELET THIS SECTION IN RELEASE-------------------------------------------------- //
-void StartWindow::testFunc(){
-    QMessageBox::about(this,"TESTFUNC","              ");
 }

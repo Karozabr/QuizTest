@@ -32,9 +32,9 @@
   <widget class="QLabel" name="labelResults">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>30</x>
      <y>10</y>
-     <width>211</width>
+     <width>351</width>
      <height>30</height>
     </rect>
    </property>
@@ -68,7 +68,10 @@
     </font>
    </property>
    <property name="text">
-    <string>Y o u r    R e s u l t s</string>
+    <string extracomment="Result Window main title">Y o u r    R e s u l t s</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QTableWidget" name="tableResult_deatil">
@@ -76,34 +79,40 @@
     <rect>
      <x>20</x>
      <y>61</y>
-     <width>90</width>
+     <width>101</width>
      <height>160</height>
     </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContents</enum>
    </property>
    <property name="editTriggers">
     <set>QAbstractItemView::NoEditTriggers</set>
    </property>
-   <property name="showGrid">
-    <bool>true</bool>
+   <property name="tabKeyNavigation">
+    <bool>false</bool>
    </property>
-   <attribute name="horizontalHeaderVisible">
-    <bool>true</bool>
-   </attribute>
-   <attribute name="horizontalHeaderMinimumSectionSize">
-    <number>40</number>
-   </attribute>
+   <property name="showDropIndicator" stdset="0">
+    <bool>false</bool>
+   </property>
+   <property name="dragDropOverwriteMode">
+    <bool>false</bool>
+   </property>
+   <property name="cornerButtonEnabled">
+    <bool>false</bool>
+   </property>
    <attribute name="horizontalHeaderDefaultSectionSize">
-    <number>89</number>
+    <number>85</number>
    </attribute>
-   <attribute name="horizontalHeaderHighlightSections">
-    <bool>true</bool>
-   </attribute>
-   <attribute name="verticalHeaderVisible">
-    <bool>true</bool>
-   </attribute>
-   <column>
+   <row>
     <property name="text">
-     <string>Result</string>
+     <string notr="true">1</string>
     </property>
     <property name="toolTip">
      <string notr="true"/>
@@ -119,6 +128,28 @@
     <property name="textAlignment">
      <set>AlignCenter</set>
     </property>
+   </row>
+   <column>
+    <property name="text">
+     <string extracomment="Result table detailed">Result</string>
+    </property>
+    <property name="toolTip">
+     <string notr="true"/>
+    </property>
+    <property name="whatsThis">
+     <string notr="true"/>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
    </column>
   </widget>
   <widget class="QTableWidget" name="tableResult_total">
@@ -126,9 +157,18 @@
     <rect>
      <x>170</x>
      <y>120</y>
-     <width>192</width>
-     <height>87</height>
+     <width>201</width>
+     <height>91</height>
     </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContents</enum>
    </property>
    <property name="editTriggers">
     <set>QAbstractItemView::NoEditTriggers</set>
@@ -141,7 +181,7 @@
    </attribute>
    <row>
     <property name="text">
-     <string>Correct</string>
+     <string extracomment="Correct row title answres row in total Result table">Correct</string>
     </property>
     <property name="toolTip">
      <string notr="true"/>
@@ -155,7 +195,7 @@
    </row>
    <row>
     <property name="text">
-     <string>Incorrect</string>
+     <string extracomment="Incorrect row title answres row in total Result table">Incorrect</string>
     </property>
     <property name="textAlignment">
      <set>AlignLeading|AlignVCenter</set>
@@ -163,7 +203,7 @@
    </row>
    <column>
     <property name="text">
-     <string>Answers</string>
+     <string extracomment="Amount column title answres row in total Result table">Amount</string>
     </property>
     <property name="toolTip">
      <string notr="true"/>
@@ -182,7 +222,7 @@
    </column>
    <column>
     <property name="text">
-     <string>Value, %</string>
+     <string extracomment="Percent column title answres row in total Result tablecolumn title answres row in total Result table">Percent</string>
     </property>
     <property name="toolTip">
      <string notr="true"/>
@@ -199,6 +239,76 @@
      <set>AlignCenter</set>
     </property>
    </column>
+   <item row="0" column="0">
+    <property name="text">
+     <string notr="true"/>
+    </property>
+    <property name="toolTip">
+     <string notr="true"/>
+    </property>
+    <property name="whatsThis">
+     <string notr="true"/>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+    <property name="flags">
+     <set>NoItemFlags</set>
+    </property>
+   </item>
+   <item row="0" column="1">
+    <property name="text">
+     <string notr="true"/>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+    <property name="flags">
+     <set>NoItemFlags</set>
+    </property>
+   </item>
+   <item row="1" column="0">
+    <property name="text">
+     <string notr="true"/>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+    <property name="flags">
+     <set>NoItemFlags</set>
+    </property>
+   </item>
+   <item row="1" column="1">
+    <property name="text">
+     <string notr="true"/>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+    <property name="flags">
+     <set>NoItemFlags</set>
+    </property>
+   </item>
   </widget>
  </widget>
  <resources/>
