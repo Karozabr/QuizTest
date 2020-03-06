@@ -1,2 +1,2 @@
 # QuizTest
-Simple program for tests and quizes made o QT widgets
+Simple program for tests and quizes made on QT widgets
